@@ -10,7 +10,7 @@ app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0  # Disable caching for easier develo
 client = translate.TranslationServiceClient()
 
 # Initialize OpenAI API (replace with your actual OpenAI API key)
-openai.api_key = 'your_openai_api_key'
+openai.api_key = 'your_openai_api_key' # either you can enter your key directly or if not create .env file, store your key and recall using dotenv. 
 
 # Initialize Guesslang
 guess = Guess()

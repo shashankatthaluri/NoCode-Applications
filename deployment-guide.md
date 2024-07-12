@@ -1,4 +1,4 @@
-# Deployment Guide 🚀
+# How to deploy your project 🚀
 
 Welcome to the deployment guide! This document will walk you through the steps to deploy and maintain the application, both locally and on various cloud platforms.
 

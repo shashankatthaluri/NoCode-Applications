@@ -1,11 +1,19 @@
 import logging
 import pygame
 from settings import initialize_screen, GRAVITY, JUMP_STRENGTH, BIRD_SPEED
+from enum import Enum
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 import random
+
+class GameState(Enum):
+    START = "start"
+    COUNTDOWN = "countdown"
+    PLAYING = "playing"
+    PAUSED = "paused"
+    GAME_OVER = "game_over"
 
 class Bird:
     def __init__(self, x, y):
@@ -48,7 +56,7 @@ def main():
     cylinders = []
     score = 0
 
-    game_state = "start"
+    game_state = GameState.START
     countdown = 3
     countdown_timer = 0
 
@@ -58,37 +66,37 @@ def main():
             if event.type == pygame.QUIT:
                 running = False
             if event.type == pygame.MOUSEBUTTONDOWN or (event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE):
-                if game_state == "start":
-                    game_state = "countdown"
+                if game_state == GameState.START:
+                    game_state = GameState.COUNTDOWN
                     countdown_timer = pygame.time.get_ticks()
-                elif game_state == "playing":
+                elif game_state == GameState.PLAYING:
                     bird.jump()
-                elif game_state == "game_over":
-                    game_state = "countdown"
+                elif game_state == GameState.GAME_OVER:
+                    game_state = GameState.COUNTDOWN
                     countdown = 3
                     countdown_timer = pygame.time.get_ticks()
                     bird = Bird(width // 4, height // 2)
                     cylinders = []
                     score = 0
             if event.type == pygame.KEYDOWN and event.key == pygame.K_p:
-                if game_state == "playing":
-                    game_state = "paused"
-                elif game_state == "paused":
-                    game_state = "playing"
+                if game_state == GameState.PLAYING:
+                    game_state = GameState.PAUSED
+                elif game_state == GameState.PAUSED:
+                    game_state = GameState.PLAYING
 
         screen.fill((135, 206, 235))  # Sky blue background
 
-        if game_state == "start":
+        if game_state == GameState.START:
             draw_text(screen, "Click to Start", 50, width // 2, height // 2)
-        elif game_state == "countdown":
+        elif game_state == GameState.COUNTDOWN:
             current_time = pygame.time.get_ticks()
             if current_time - countdown_timer > 1000:
                 countdown -= 1
                 countdown_timer = current_time
             if countdown == 0:
-                game_state = "playing"
+                game_state = GameState.PLAYING
             draw_text(screen, str(countdown), 100, width // 2, height // 2)
-        elif game_state == "playing":
+        elif game_state == GameState.PLAYING:
             bird.update()
             pygame.draw.circle(screen, (255, 255, 0), (int(bird.x), int(bird.y)), 20)  # Yellow bird
 
@@ -107,22 +115,22 @@ def main():
 
                 if (bird.x + 20 > cylinder.x and bird.x - 20 < cylinder.x + cylinder.width and
                     (bird.y - 20 < cylinder.gap_y or bird.y + 20 > cylinder.gap_y + cylinder.gap_size)):
-                    game_state = "game_over"
+                    game_state = GameState.GAME_OVER
 
             cylinders = [c for c in cylinders if c.x + c.width > 0]
 
             if bird.y > height or bird.y < 0:
-                game_state = "game_over"
+                game_state = GameState.GAME_OVER
 
             draw_text(screen, f"Score: {score}", 30, width // 2, 30)
             draw_text(screen, "Press 'P' to Pause", 20, width // 2, 60)
-        elif game_state == "paused":
+        elif game_state == GameState.PAUSED:
             for cylinder in cylinders:
                 cylinder.draw(screen)
             pygame.draw.circle(screen, (255, 255, 0), (int(bird.x), int(bird.y)), 20)  # Yellow bird
             draw_text(screen, "PAUSED", 50, width // 2, height // 2)
             draw_text(screen, "Press 'P' to Resume", 30, width // 2, height // 2 + 50)
-        elif game_state == "game_over":
+        elif game_state == GameState.GAME_OVER:
             draw_text(screen, "Game Over", 50, width // 2, height // 2 - 50)
             draw_text(screen, f"Final Score: {score}", 30, width // 2, height // 2)
             draw_text(screen, "Click to Restart", 30, width // 2, height // 2 + 50)

@@ -24,7 +24,7 @@ def detect_language(code):
 def explain_code(code):
     response = openai.Completion.create(
         engine="text-davinci-003",
-        prompt=f"Explain the following {detect_language(code)} code in simple English:\n\n{code}",
+        prompt=f"Explain the following {detect_language(code)} code in simple English:\n\n{code}", # You can write a better prompt according to your requirement
         max_tokens=150
     )
     explanation = response.choices[0].text.strip()

@@ -61,8 +61,8 @@ This documentation covers the setup instructions, feature explanations, usage gu
 ### Prerequisites
 Before proceeding, ensure you have the following installed:
 
-- Python (version X.X or higher) 🐍
-- Flask (version X.X or higher) 🌐
+- Python (version 3.11 or higher) 🐍
+- Flask (version 3.0 or higher) 🌐
 - Google Cloud SDK (for Translate API) ☁️
 - OpenAI API Key 🔑
 

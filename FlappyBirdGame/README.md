@@ -1,6 +1,6 @@
 # 🐦 Flappy Bird Game
 
-This is a simple implementation of the classic Flappy Bird game using Python and Pygame.
+This is a simple implementation of the classic Flappy Bird game using Python and Pygame. Use [getlazy](https://getlazy.ai/) and chatgpt ai tools I could built this app in just 5 minutes including this readme. 
 
 ## 📑 Table of Contents
 
